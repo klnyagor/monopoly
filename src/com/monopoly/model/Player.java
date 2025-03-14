@@ -1,10 +1,15 @@
 package com.monopoly.model;
 
+import com.monopoly.board.Tile;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
     private String name;
     private PawnColor pawnColor;
     private int money;
     private int position;
+    private List<Tile> titles; // Lista dos títulos (propriedades e ferrovias) do jogador
 
     public Player(String name, PawnColor pawnColor) {
         this.name = name;
@@ -12,6 +17,7 @@ public class Player {
         this.money = 1500;
         // Inicia no "Go"
         this.position = 39;
+        this.titles = new ArrayList<>();
     }
 
     public String getName() {
@@ -40,5 +46,14 @@ public class Player {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+    
+    // Métodos que gerencia os títulos do jogador
+    public void addTitle(Tile tile) {
+        titles.add(tile);
+    }
+    
+    public List<Tile> getTitles() {
+        return titles;
     }
 }

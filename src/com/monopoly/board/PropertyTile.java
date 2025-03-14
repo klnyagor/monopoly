@@ -43,6 +43,8 @@ public class PropertyTile extends Tile {
                 if (response.startsWith("s")) {
                     player.deductMoney(price);
                     owner = player;
+                    // Adiciona o título à lista do jogador
+                    player.addTitle(this);
                     System.out.println("O jogador " + player.getName() + " comprou " + name + " por $" + price + ".");
                 } else {
                     System.out.println("Você optou por não comprar " + name + ".");
@@ -63,5 +65,10 @@ public class PropertyTile extends Tile {
         } else {
             System.out.println("Você é o dono desta propriedade.");
         }
+    }
+    
+    @Override
+    public String getTitleInfo(GameEngine engine) {
+        return "[" + name + "] – propriedade " + group + ", aluguel " + rent;
     }
 }

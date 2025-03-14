@@ -1,7 +1,7 @@
 package com.monopoly.board;
 
-import com.monopoly.model.Player;
 import com.monopoly.GameEngine;
+import com.monopoly.model.Player;
 
 public class TaxTile extends Tile {
     private int taxAmount;
@@ -20,5 +20,11 @@ public class TaxTile extends Tile {
             System.out.println("O jogador " + player.getName() + " entrou em falência!");
             engine.setBankrupt(player);
         }
+    }
+    
+    @Override
+    public String getTitleInfo(GameEngine engine) {
+        // como TaxTile não é um título ele vai retornar uma string vazia
+        return "";
     }
 }
