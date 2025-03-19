@@ -4,12 +4,19 @@ import com.monopoly.board.Tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.monopoly.cards.Card;
+
 public class Player {
     private String name;
     private PawnColor pawnColor;
     private int money;
     private int position;
     private List<Tile> titles; // Lista dos títulos (propriedades e ferrovias) do jogador
+    private List<Card> getOutOfJailCards;
+
+    // Novos atributos para a prisão
+    private boolean inPrison;
+    private int prisonTurnCount; // Quantos turnos foram usados tentando sair
 
     public Player(String name, PawnColor pawnColor) {
         this.name = name;
@@ -18,6 +25,9 @@ public class Player {
         // Inicia no "Go"
         this.position = 39;
         this.titles = new ArrayList<>();
+        this.getOutOfJailCards = new ArrayList<>();
+        this.inPrison = false;
+        this.prisonTurnCount = 0;
     }
 
     public String getName() {
@@ -56,4 +66,36 @@ public class Player {
     public List<Tile> getTitles() {
         return titles;
     }
+
+    public void addGetOutOfJailCard(Card card) {
+        getOutOfJailCards.add(card);
+    }
+    
+    public List<Card> getGetOutOfJailCards() {
+        return getOutOfJailCards;
+    }
+    
+    // Métodos para gerenciar a prisão
+    public boolean isInPrison() {
+        return inPrison;
+    }
+    
+    public void setInPrison(boolean inPrison) {
+        this.inPrison = inPrison;
+        if (!inPrison) {
+            prisonTurnCount = 0;
+        }
+    }
+    
+    public int getPrisonTurnCount() {
+        return prisonTurnCount;
+    }
+    
+    public void incrementPrisonTurnCount() {
+        prisonTurnCount++;
+    }
+
+    public void resetPrisonTurnCount() {
+    this.prisonTurnCount = 0;
+}
 }
