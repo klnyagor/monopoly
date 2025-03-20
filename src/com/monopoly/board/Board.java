@@ -12,7 +12,7 @@ public class Board {
     }
 
     private void initializeBoard() {
-        tiles.add(new PropertyTile(0, "Mediterranean Avenue", 60, 2, "marrom"));
+        tiles.add(new PropertyTile(0, "Mediterranean Avenue", 60, 2, "roxa"));
         tiles.add(new CommunityChestTile(1, "Community Chest 1"));
         tiles.add(new PropertyTile(2, "Baltic Avenue", 60, 4, "roxa"));
         tiles.add(new TaxTile(3, "Income Tax", 200));

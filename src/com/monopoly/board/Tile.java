@@ -35,4 +35,8 @@ public abstract class Tile {
     public Player getOwner() {
         return null; // o padrao sera null pq tem tiler que não sao titulos
     }
+
+    public String getGroup() {
+    return ""; // ou null, se preferir
+}
 }

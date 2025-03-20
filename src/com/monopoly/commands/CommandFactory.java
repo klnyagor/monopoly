@@ -12,6 +12,8 @@ public class CommandFactory {
             return new PagarCommand();
         } else if (input.equalsIgnoreCase("carta")) {
             return new CartaCommand();
+        } else if (input.equalsIgnoreCase("construir")) {
+            return new ConstruirCommand();
         }
         throw new IllegalArgumentException("Comando inválido: " + input);
     }

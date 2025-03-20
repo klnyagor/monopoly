@@ -1,6 +1,7 @@
 package com.monopoly;
 
 import com.monopoly.board.Board;
+import com.monopoly.board.PropertyTile;
 import com.monopoly.board.Tile;
 import com.monopoly.board.TitleType;
 import com.monopoly.cards.ChanceCard;
@@ -9,6 +10,7 @@ import com.monopoly.initialization.GameInitializer;
 import com.monopoly.model.Player;
 import com.monopoly.turn.TurnState;
 import com.monopoly.turn.TurnStateFactory;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,6 +26,9 @@ public class GameEngine {
     // Decks para Community Chest e Chance
     private Queue<CommunityChestCard> communityChestDeck;
     private Queue<ChanceCard> chanceDeck;
+
+    private int availableHouses = 32;
+    private int availableHotels = 12;
     
     public GameEngine() {
         GameInitializer initializer = new GameInitializer();
@@ -140,5 +145,64 @@ public class GameEngine {
     
     public int getJailPosition() {
         return 9;
+    }
+
+    public int getAvailableHouses() {
+    return availableHouses;
+    }
+
+    public int getAvailableHotels() {
+        return availableHotels;
+    }
+
+    public void decrementAvailableHouses(int n) {
+        availableHouses -= n;
+    }
+
+    public void decrementAvailableHotels(int n) {
+        availableHotels -= n;
+    }
+
+    public void incrementAvailableHouses(int n) {
+        availableHouses += n;
+    }
+
+    public boolean hasMonopoly(Player owner, String group) {
+        for (Tile tile : board.getTiles()) {
+            if (tile.getTitleType() == TitleType.PROPERTY) {
+                if (tile.getGroup().equalsIgnoreCase(group)) {
+                    if (!owner.equals(tile.getOwner())) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public List<PropertyTile> getBuildableProperties(Player player) {
+        List<PropertyTile> buildable = new ArrayList<>();
+        for (Tile tile : board.getTiles()) {
+            if (tile.getTitleType() == TitleType.PROPERTY && player.equals(tile.getOwner())) {
+                PropertyTile pt = (PropertyTile) tile;
+                if (pt.isEligibleToBuild(this)) { // método implementado em PropertyTile
+                    buildable.add(pt);
+                }
+            }
+        }
+        return buildable;
+    }
+    
+    public List<PropertyTile> getPropertiesOfGroup(String group, Player owner) {
+    List<PropertyTile> list = new ArrayList<>();
+    for (Tile tile : board.getTiles()) {
+        if (tile.getTitleType() == TitleType.PROPERTY) {
+            PropertyTile pt = (PropertyTile) tile;
+            if (pt.getGroup().equalsIgnoreCase(group) && owner.equals(pt.getOwner())) {
+                list.add(pt);
+            }
+        }
+    }
+    return list;
     }
 }
