@@ -5,10 +5,10 @@ import com.monopoly.board.Tile;
 import com.monopoly.board.TitleType;
 import com.monopoly.cards.ChanceCard;
 import com.monopoly.cards.CommunityChestCard;
-import com.monopoly.commands.CommandFactory;
-import com.monopoly.commands.ICommand;
 import com.monopoly.initialization.GameInitializer;
 import com.monopoly.model.Player;
+import com.monopoly.turn.TurnState;
+import com.monopoly.turn.TurnStateFactory;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -92,36 +92,21 @@ public class GameEngine {
     }
     
     public void startGame() {
-    Scanner scanner = new Scanner(System.in);
-    while (!gameOver) {
-        Player currentPlayer = getCurrentPlayer();
-        boolean turnComplete = false;
-        while (!turnComplete && !gameOver) {
-            System.out.println("\nA jogada de " + currentPlayer.getName() + " começou.");
-            if (currentPlayer.isInPrison()) {
-                System.out.println(currentPlayer.getName() + " está na prisão.");
-                System.out.println("Comandos disponíveis: [pagar][carta][jogar][status][sair]");
-            } else {
-                System.out.println("Comandos disponíveis: [jogar][status][sair]");
-            }
-            System.out.print("Entre com um comando: ");
-            String input = scanner.nextLine().trim();
-            try {
-                ICommand command = CommandFactory.getCommand(input);
-                command.execute(this);
-                if (input.equalsIgnoreCase("jogar") || input.equalsIgnoreCase("sair")) {
-                    turnComplete = true;
-                }
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+        Scanner scanner = new Scanner(System.in);
+        while (!gameOver) {
+            Player currentPlayer = getCurrentPlayer();
+            TurnState turnState = TurnStateFactory.getTurnState(currentPlayer); //verifica o estado do turno de acordo com o jogador
+            turnState.handleTurn(this, currentPlayer, scanner);
+            if (!gameOver) {
+                nextTurn();
             }
         }
-        if (!gameOver) {
-            nextTurn();
-        }
+        scanner.close();
     }
-    scanner.close();
-}
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
 
     private void initializeDecks() {
         // Deck do Community Chest
