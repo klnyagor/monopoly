@@ -9,7 +9,7 @@ public class PropertyTile extends Tile {
     private int rent;
     private String group;
     private Player owner;
-
+    
     public PropertyTile(int position, String name, int price, int rent, String group) {
         super(position, name);
         this.price = price;
@@ -17,19 +17,7 @@ public class PropertyTile extends Tile {
         this.group = group;
         this.owner = null;
     }
-
-    public String getGroup() {
-        return group;
-    }
     
-    public int getRent() {
-        return rent;
-    }
-    
-    public Player getOwner() {
-        return owner;
-    }
-
     @Override
     public void landOn(Player player, GameEngine engine) {
         System.out.println("Você caiu em " + (position + 1) + " - " + name + ".");
@@ -43,16 +31,15 @@ public class PropertyTile extends Tile {
                 if (response.startsWith("s")) {
                     player.deductMoney(price);
                     owner = player;
-                    // Adiciona o título à lista do jogador
                     player.addTitle(this);
                     System.out.println("O jogador " + player.getName() + " comprou " + name + " por $" + price + ".");
                 } else {
                     System.out.println("Você optou por não comprar " + name + ".");
                 }
             } else {
-                System.out.println("O jogador " + player.getName() + " não tem dinheiro suficiente para comprar " + name + ".");
+                System.out.println("Você não tem dinheiro suficiente para comprar " + name + ".");
             }
-        } else if (owner != player) {
+        } else if (!owner.equals(player)) {
             System.out.println(name + " já pertence a " + owner.getName() + ". Aluguel: $" + rent + ".");
             int payment = Math.min(rent, player.getMoney());
             player.deductMoney(rent);
@@ -70,5 +57,19 @@ public class PropertyTile extends Tile {
     @Override
     public String getTitleInfo(GameEngine engine) {
         return "[" + name + "] – propriedade " + group + ", aluguel " + rent;
+    }
+    
+    @Override
+    public TitleType getTitleType() {
+        return TitleType.PROPERTY;
+    }
+    
+    @Override
+    public Player getOwner() {
+        return owner;
+    }
+    
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 }

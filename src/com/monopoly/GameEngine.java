@@ -1,8 +1,8 @@
 package com.monopoly;
 
 import com.monopoly.board.Board;
-import com.monopoly.board.RailroadTile;
-import com.monopoly.board.UtilityTile;
+import com.monopoly.board.Tile;
+import com.monopoly.board.TitleType;
 import com.monopoly.cards.ChanceCard;
 import com.monopoly.cards.CommunityChestCard;
 import com.monopoly.commands.CommandFactory;
@@ -67,12 +67,9 @@ public class GameEngine {
     
     public int countRailroadsOwnedBy(Player owner) {
         int count = 0;
-        for (var tile : board.getTiles()) {
-            if (tile instanceof RailroadTile) {
-                RailroadTile rr = (RailroadTile) tile;
-                if (owner.equals(rr.getOwner())) {
-                    count++;
-                }
+        for (Tile tile : board.getTiles()) {
+            if (tile.getTitleType() == TitleType.RAILROAD && owner.equals(tile.getOwner())) {
+                count++;
             }
         }
         return count;
@@ -80,12 +77,9 @@ public class GameEngine {
     
     public int countUtilitiesOwnedBy(Player owner) {
         int count = 0;
-        for (var tile : board.getTiles()) {
-            if (tile instanceof UtilityTile) {
-                UtilityTile ut = (UtilityTile) tile;
-                if (owner.equals(ut.getOwner())) {
-                    count++;
-                }
+        for (Tile tile : board.getTiles()) {
+            if (tile.getTitleType() == TitleType.UTILITY && owner.equals(tile.getOwner())) {
+                count++;
             }
         }
         return count;
@@ -98,41 +92,44 @@ public class GameEngine {
     }
     
     public void startGame() {
-        Scanner scanner = new Scanner(System.in);
-        while (!gameOver) {
-            Player currentPlayer = getCurrentPlayer();
-            boolean turnComplete = false;
-            while (!turnComplete && !gameOver) {
-                System.out.println("\nA jogada de " + currentPlayer.getName() + " começou.");
+    Scanner scanner = new Scanner(System.in);
+    while (!gameOver) {
+        Player currentPlayer = getCurrentPlayer();
+        boolean turnComplete = false;
+        while (!turnComplete && !gameOver) {
+            System.out.println("\nA jogada de " + currentPlayer.getName() + " começou.");
+            if (currentPlayer.isInPrison()) {
+                System.out.println(currentPlayer.getName() + " está na prisão.");
+                System.out.println("Comandos disponíveis: [pagar][carta][jogar][status][sair]");
+            } else {
                 System.out.println("Comandos disponíveis: [jogar][status][sair]");
-                System.out.print("Entre com um comando: ");
-                String input = scanner.nextLine().trim();
-                try {
-                    ICommand command = CommandFactory.getCommand(input);
-                    command.execute(this);
-                    // Se o comando for "jogar" ou "sair", encerra a vez
-                    if (input.equalsIgnoreCase("jogar") || input.equalsIgnoreCase("sair")) {
-                        turnComplete = true;
-                    }
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                }
             }
-            if (!gameOver) {
-                nextTurn();
+            System.out.print("Entre com um comando: ");
+            String input = scanner.nextLine().trim();
+            try {
+                ICommand command = CommandFactory.getCommand(input);
+                command.execute(this);
+                if (input.equalsIgnoreCase("jogar") || input.equalsIgnoreCase("sair")) {
+                    turnComplete = true;
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
-        scanner.close();
+        if (!gameOver) {
+            nextTurn();
+        }
     }
-    
-    // Inicializa os decks Community Chest e Chance (apenas as da prisão)
+    scanner.close();
+}
+
     private void initializeDecks() {
         // Deck do Community Chest
         LinkedList<CommunityChestCard> ccCards = new LinkedList<>();
         ccCards.add(new CommunityChestCard(6, "Saia livre da prisão, sem pagar", 
                 "Esta carta pode ser mantida até o uso ou venda."));
         ccCards.add(new CommunityChestCard(7, "Vá para a prisão", 
-                "Vá diretamente para a prisão – Não passe pelo ponto de partida – Não receba $200."));
+                "Vá diretamente para a prisão - Não passe pelo ponto de partida - Não receba $200."));
         Collections.shuffle(ccCards);
         communityChestDeck = new LinkedList<>(ccCards);
         
@@ -144,14 +141,12 @@ public class GameEngine {
         chanceDeck = new LinkedList<>(chanceCards);
     }
     
-    // sorteia uma carta do Community Chest
     public CommunityChestCard drawCommunityChestCard() {
         CommunityChestCard card = communityChestDeck.poll();
         communityChestDeck.offer(card);
         return card;
     }
     
-    // sorteia uma carta da Chance
     public ChanceCard drawChanceCard() {
         ChanceCard card = chanceDeck.poll();
         chanceDeck.offer(card);

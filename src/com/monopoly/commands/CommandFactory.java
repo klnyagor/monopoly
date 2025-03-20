@@ -8,8 +8,7 @@ public class CommandFactory {
             return new SairCommand();
         } else if (input.equalsIgnoreCase("status")) {
             return new StatusCommand();
-        }
-        else if (input.equalsIgnoreCase("pagar")) {
+        } else if (input.equalsIgnoreCase("pagar")) {
             return new PagarCommand();
         } else if (input.equalsIgnoreCase("carta")) {
             return new CartaCommand();

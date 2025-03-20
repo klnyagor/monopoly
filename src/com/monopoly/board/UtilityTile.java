@@ -60,10 +60,20 @@ public class UtilityTile extends Tile {
     
     @Override
     public String getTitleInfo(GameEngine engine) {
-        return "[" + name + "] – serviço público";
+        return "[" + name + "] - serviço público";
     }
     
+    @Override
+    public TitleType getTitleType() {
+        return TitleType.UTILITY;
+    }
+    
+    @Override
     public Player getOwner() {
         return owner;
+    }
+    
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 }

@@ -72,7 +72,15 @@ public class RailroadTile extends Tile {
     
     @Override
     public String getTitleInfo(GameEngine engine) {
-        int currentRent = getCurrentRent(engine);
-        return "[" + name + "] – ferrovia, corrida " + currentRent;
+        return "[" + name + "] ferrovia";
+    }
+    
+    @Override
+    public TitleType getTitleType() {
+        return TitleType.RAILROAD;
+    }
+    
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 }
