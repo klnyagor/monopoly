@@ -21,9 +21,9 @@ public class Board {
         tiles.add(new ChanceTile(6, "Chance 1"));
         tiles.add(new PropertyTile(7, "Vermont Avenue", 100, 6, "azul claro"));
         tiles.add(new PropertyTile(8, "Connecticut Avenue", 120, 8, "azul claro"));
-        tiles.add(new FreeParkingTile(9, "Jail – Just Visiting"));
+        tiles.add(new FreeParkingTile(9, "Jail - Just Visiting"));
         tiles.add(new PropertyTile(10, "St. Charles Place", 140, 10, "rosa"));
-        tiles.add(new FreeParkingTile(11, "Electric Company"));
+        tiles.add(new UtilityTile(11, "Electric Company", 150));
         tiles.add(new PropertyTile(12, "States Avenue", 140, 10, "rosa"));
         tiles.add(new PropertyTile(13, "Virginia Avenue", 160, 12, "rosa"));
         tiles.add(new RailroadTile(14, "Pennsylvania Railroad", 200));
@@ -39,7 +39,7 @@ public class Board {
         tiles.add(new RailroadTile(24, "B & O Railroad", 200));
         tiles.add(new PropertyTile(25, "Atlantic Avenue", 260, 22, "amarelo"));
         tiles.add(new PropertyTile(26, "Ventnor Avenue", 260, 22, "amarelo"));
-        tiles.add(new FreeParkingTile(27, "Water Works"));
+        tiles.add(new UtilityTile(27, "Water Works", 150));
         tiles.add(new PropertyTile(28, "Marvin Gardens", 280, 24, "amarelo"));
         tiles.add(new FreeParkingTile(29, "Go to Jail"));
         tiles.add(new PropertyTile(30, "Pacific Avenue", 300, 26, "verde"));
