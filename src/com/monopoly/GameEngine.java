@@ -5,7 +5,11 @@ import com.monopoly.board.PropertyTile;
 import com.monopoly.board.Tile;
 import com.monopoly.board.TitleType;
 import com.monopoly.cards.ChanceCard;
+import com.monopoly.cards.ChanceCards.GoToJailChanceCard;
+import com.monopoly.cards.ChanceCards.PovertyTaxChanceCard;
 import com.monopoly.cards.CommunityChestCard;
+import com.monopoly.cards.CommunityChestCards.GetOuOfJailCommunityCard;
+import com.monopoly.cards.CommunityChestCards.GotoJailCommunityCard;
 import com.monopoly.initialization.GameInitializer;
 import com.monopoly.model.Player;
 import com.monopoly.turn.TurnState;
@@ -116,18 +120,18 @@ public class GameEngine {
     private void initializeDecks() {
         // Deck do Community Chest
         LinkedList<CommunityChestCard> ccCards = new LinkedList<>();
-        ccCards.add(new CommunityChestCard(6, "Saia livre da prisão, sem pagar", 
-                "Esta carta pode ser mantida até o uso ou venda."));
-        ccCards.add(new CommunityChestCard(7, "Vá para a prisão", 
-                "Vá diretamente para a prisão - Não passe pelo ponto de partida - Não receba $200."));
+
+        ccCards.add(new GetOuOfJailCommunityCard());
+        ccCards.add(new GotoJailCommunityCard());
         Collections.shuffle(ccCards);
         communityChestDeck = new LinkedList<>(ccCards);
         
         // Deck de Chance
         LinkedList<ChanceCard> chanceCards = new LinkedList<>();
-        chanceCards.add(new ChanceCard(8, "Vá diretamente para a Prisão", 
-                "Não passe pelo ponto de partida, não receba $200."));
+        chanceCards.add(new GoToJailChanceCard());
+        chanceCards.add(new PovertyTaxChanceCard());
         Collections.shuffle(chanceCards);
+
         chanceDeck = new LinkedList<>(chanceCards);
     }
     
